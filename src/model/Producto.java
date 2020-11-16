@@ -9,13 +9,22 @@ package model;
  *
  * @author rodrigo_dev
  */
-public class Produco {
+public class Producto {
     
     private String id, descripcion, codigo, create_at, update_at;
     private int impuesto, cantidad, idProveedor, idUsuario;
-    private double precio;
+    private double precio, preciodescuento;
+    
 
-    public Produco() {
+    public Producto() {
+    }
+
+    public double getPreciodescuento() {
+        return preciodescuento;
+    }
+
+    public void setPreciodescuento(double preciodescuento) {
+        this.preciodescuento = preciodescuento;
     }
 
     public String getId() {
@@ -100,7 +109,7 @@ public class Produco {
 
     @Override
     public String toString() {
-        return "Produco{" + "id=" + id + ", descripcion=" + descripcion + ", codigo=" + codigo + ", create_at=" + create_at + ", update_at=" + update_at + ", impuesto=" + impuesto + ", cantidad=" + cantidad + ", idProveedor=" + idProveedor + ", idUsuario=" + idUsuario + ", precio=" + precio + '}';
+        return "Producto{" + "id=" + id + ", descripcion=" + descripcion + ", codigo=" + codigo + ", create_at=" + create_at + ", update_at=" + update_at + ", impuesto=" + impuesto + ", cantidad=" + cantidad + ", idProveedor=" + idProveedor + ", idUsuario=" + idUsuario + ", precio=" + precio + ", preciodescuento=" + preciodescuento + '}';
     }
- 
+
 }

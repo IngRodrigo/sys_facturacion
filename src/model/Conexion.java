@@ -56,11 +56,11 @@ public class Conexion {
         return rs;
     }
 
-    public boolean insertarRegistro(Connection conexion, String sql) {
+    public boolean insertarRegistro(String sql) {
         boolean resultado = false;
 
         try {
-            db = conexion.prepareStatement(sql);
+            db = openConexion().prepareStatement(sql);
             resultado = true;
         } catch (SQLException e) {
             System.out.println(e);

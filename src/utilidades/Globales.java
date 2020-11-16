@@ -8,7 +8,7 @@ import java.util.Calendar;
  *
  * @author rodrigo_dev
  */
-public class Constantes {
+public class Globales {
 
     public static String capturarIP() {
         String ipCapturado = "";
@@ -28,7 +28,7 @@ public class Constantes {
         Calendar calendario=Calendar.getInstance();
           
         int dia=calendario.get(Calendar.DAY_OF_MONTH);
-        int mes=calendario.get(Calendar.MONTH+1);
+        int mes=calendario.get(Calendar.MONTH)+1;
         int anio=calendario.get(Calendar.YEAR);
         
         String hora = String.format("%02d", calendario.get(Calendar.HOUR_OF_DAY));

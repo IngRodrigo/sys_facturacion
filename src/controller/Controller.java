@@ -5,14 +5,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import model.Conexion;
+import model.Producto;
+import model.ProductoDao;
 import view.MenuPrincipalView;
 import view.AccesoView;
 import view.FacturacionView;
+import view.MantenimientoView;
 
 /**
  *
@@ -28,6 +32,7 @@ public class Controller implements ActionListener, FocusListener {
     AccesoView loginVista = new AccesoView();
     MenuPrincipalView menu= new MenuPrincipalView();
     FacturacionView facturacion= new FacturacionView();
+    MantenimientoView mantenimiento= new MantenimientoView();
     /**
      * **********************************
      * Modelos    
@@ -63,8 +68,10 @@ public class Controller implements ActionListener, FocusListener {
     private void listener() {
         loginVista.btnAcceder.addActionListener(this);
         menu.btnMantenimiento.addActionListener(this);
+        menu.btnFacturacion.addActionListener(this);
         facturacion.txt_codigo_cliente.addFocusListener(this);
-
+        
+        mantenimiento._productos_btn_guardar.addActionListener(this);
     }
 
     @Override
@@ -76,12 +83,18 @@ public class Controller implements ActionListener, FocusListener {
         Eventos del menu principal
         *************************************************/
         if(evento.getSource()==menu.btnMantenimiento){
-            
+            mantenimiento.setVisible(true);
+            mantenimiento.setTitle("Mantenimiento de datos");
+            mantenimiento.setLocationRelativeTo(null);
         }
         if(evento.getSource()==menu.btnFacturacion){
             facturacion.setVisible(true);
             facturacion.setLocationRelativeTo(null);
             facturacion.setTitle("Facturación");
+        }
+        
+        if(evento.getSource()==mantenimiento._productos_btn_guardar){
+           validarProducto();
         }
     }
 
@@ -188,6 +201,37 @@ public class Controller implements ActionListener, FocusListener {
         }else{
             JOptionPane.showMessageDialog(null, "No se encuentra el cliente", "Advertencia", 2);
         }
+    }
+
+    private void validarProducto() {
+        double precioIpuesto=0;
+        String codigo=mantenimiento._productos_txt_codigo.getText();
+        String descripcion=mantenimiento._productos_txt_descripcion.getText();
+        double precio=Double.parseDouble(mantenimiento._productos_txt_precio.getText());
+        String impuesto="1";
+        if(impuesto.equals("1")){
+            precioIpuesto=((precio*10)*100);
+        }
+        int cantidad=Integer.parseInt(mantenimiento._productos_txt_cantidad.getText());
+        int proveedor=Integer.parseInt("1");
+        
+        Producto producto= new Producto();
+        producto.setCodigo(codigo);
+        producto.setDescripcion(descripcion);
+        producto.setPrecio(precio);
+        producto.setPreciodescuento(precioIpuesto);
+        producto.setImpuesto(Integer.parseInt(impuesto));
+        producto.setCantidad(cantidad);
+        producto.setIdProveedor(proveedor);
+        
+        
+       // System.out.println(ProductoDao.insertarProducto(producto, this.usuario.getId()));
+        String insert= ProductoDao.insertarProducto(producto, this.usuario.getId());
+        Connection con=conexion.openConexion();
+        if(conexion.insertarRegistro(insert)){
+            JOptionPane.showMessageDialog(null, "Registro insertado con exito", "OK", 1);
+        }
+       
     }
 
     
