@@ -50,7 +50,7 @@ public class Conexion {
             rs = ps.executeQuery();
 
         } catch (Exception e) {
-            System.err.println("Error clase Carrera_DAO metodo listarCarrera " + e);
+            System.err.println("Exception en la consulta " + e);
             closeConexion();
         }
         return rs;
@@ -61,6 +61,7 @@ public class Conexion {
 
         try {
             db = openConexion().prepareStatement(sql);
+            db.execute(sql);
             resultado = true;
         } catch (SQLException e) {
             System.out.println(e);

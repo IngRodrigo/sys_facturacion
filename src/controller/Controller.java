@@ -210,7 +210,7 @@ public class Controller implements ActionListener, FocusListener {
         double precio=Double.parseDouble(mantenimiento._productos_txt_precio.getText());
         String impuesto="1";
         if(impuesto.equals("1")){
-            precioIpuesto=((precio*10)*100);
+            precioIpuesto=((precio*10)/100);
         }
         int cantidad=Integer.parseInt(mantenimiento._productos_txt_cantidad.getText());
         int proveedor=Integer.parseInt("1");
@@ -225,11 +225,12 @@ public class Controller implements ActionListener, FocusListener {
         producto.setIdProveedor(proveedor);
         
         
-       // System.out.println(ProductoDao.insertarProducto(producto, this.usuario.getId()));
+        System.out.println(ProductoDao.insertarProducto(producto, this.usuario.getId()));
         String insert= ProductoDao.insertarProducto(producto, this.usuario.getId());
-        Connection con=conexion.openConexion();
+        
         if(conexion.insertarRegistro(insert)){
             JOptionPane.showMessageDialog(null, "Registro insertado con exito", "OK", 1);
+            conexion.closeConexion();
         }
        
     }
