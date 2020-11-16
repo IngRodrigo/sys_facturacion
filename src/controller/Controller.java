@@ -76,6 +76,9 @@ public class Controller implements ActionListener, FocusListener {
         Eventos del menu principal
         *************************************************/
         if(evento.getSource()==menu.btnMantenimiento){
+            
+        }
+        if(evento.getSource()==menu.btnFacturacion){
             facturacion.setVisible(true);
             facturacion.setLocationRelativeTo(null);
             facturacion.setTitle("Facturación");

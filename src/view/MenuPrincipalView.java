@@ -129,7 +129,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnFacturacion;
+    public javax.swing.JButton btnFacturacion;
     private javax.swing.JButton btnInventario;
     public javax.swing.JButton btnMantenimiento;
     private javax.swing.JPanel jPanel1;

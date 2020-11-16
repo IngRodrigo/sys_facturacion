@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Conexion {
 
@@ -16,6 +18,7 @@ public class Conexion {
 
     private PreparedStatement ps;
     private ResultSet rs;
+    private Statement db;
 
     public Connection getConexion() {
         try {
@@ -51,6 +54,20 @@ public class Conexion {
             closeConexion();
         }
         return rs;
+    }
+
+    public boolean insertarRegistro(Connection conexion, String sql) {
+        boolean resultado = false;
+
+        try {
+            db = conexion.prepareStatement(sql);
+            resultado = true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            resultado = false;
+        }
+
+        return resultado;
     }
 
 }
