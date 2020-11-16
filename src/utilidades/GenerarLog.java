@@ -9,7 +9,7 @@ import java.io.IOException;
  *
  * @author rodrigo_dev
  */
-public class generarLog {
+public class GenerarLog {
 
     public void ejecutarLog(String tipo, String mensaje){
         BufferedWriter bw = null;
@@ -17,7 +17,7 @@ public class generarLog {
 
     try {
                 String data = "Resultado: "+tipo+" Detalle: "+mensaje+"\n";
-                File file = new File("log.txt");
+                File file = new File(tipo+".txt");
                 // Si el archivo no existe, se crea!
                 if (!file.exists()) {
                     file.createNewFile();
@@ -32,7 +32,7 @@ public class generarLog {
         e.printStackTrace();
     } finally {
         try {
-                        //Cierra instancias de FileWriter y BufferedWriter
+            //Cierra instancias de FileWriter y BufferedWriter
             if (bw != null)
                 bw.close();
             if (fw != null)

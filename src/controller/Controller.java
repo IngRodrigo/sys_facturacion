@@ -3,6 +3,8 @@ package controller;
 import model.Usuario;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import view.FacturacionView;
  *
  * @author rodrigo_dev
  */
-public class Controller implements ActionListener {
+public class Controller implements ActionListener, FocusListener {
 
     /**
      * **********************************
@@ -61,6 +63,7 @@ public class Controller implements ActionListener {
     private void listener() {
         loginVista.btnAcceder.addActionListener(this);
         menu.btnMantenimiento.addActionListener(this);
+        facturacion.txt_codigo_cliente.addFocusListener(this);
 
     }
 
@@ -147,6 +150,41 @@ public class Controller implements ActionListener {
             System.out.println("Execption al intentar traer los usuarios: "+e);
             }
         return this.listaUsuario;
+    }
+
+    @Override
+    public void focusGained(FocusEvent fe) {    
+      //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void focusLost(FocusEvent fe) {
+        if(fe.getSource()==facturacion.txt_codigo_cliente){
+            String codigo=facturacion.txt_codigo_cliente.getText();
+            try {
+                traerCliente(codigo);
+            } catch (Exception e) {
+                System.out.println("Exception al traer el cliente = " + e);
+            }
+        }
+ 
+    }
+
+    private void traerCliente(String codigo) throws SQLException {
+        String resultado="";
+        String sql="select * from clientes where documento="+codigo;
+        resultSet=conexion.consultaSelect(sql);
+        
+        if(resultSet!=null){
+            while(resultSet.next()){
+                resultado=resultSet.getString("razon_social");
+                
+            }
+            facturacion.txt_nombre_cliente.setText(resultado);
+            conexion.closeConexion();
+        }else{
+            JOptionPane.showMessageDialog(null, "No se encuentra el cliente", "Advertencia", 2);
+        }
     }
 
     
