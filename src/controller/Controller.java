@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import model.Conexion;
 import view.MenuPrincipalView;
 import view.AccesoView;
+import view.FacturacionView;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Controller implements ActionListener {
      */
     AccesoView loginVista = new AccesoView();
     MenuPrincipalView menu= new MenuPrincipalView();
+    FacturacionView facturacion= new FacturacionView();
     /**
      * **********************************
      * Modelos    
@@ -58,6 +60,7 @@ public class Controller implements ActionListener {
 
     private void listener() {
         loginVista.btnAcceder.addActionListener(this);
+        menu.btnMantenimiento.addActionListener(this);
 
     }
 
@@ -65,6 +68,14 @@ public class Controller implements ActionListener {
     public void actionPerformed(ActionEvent evento) {
         if (evento.getSource() == loginVista.btnAcceder) {
             login();
+        }
+        /*************************************************
+        Eventos del menu principal
+        *************************************************/
+        if(evento.getSource()==menu.btnMantenimiento){
+            facturacion.setVisible(true);
+            facturacion.setLocationRelativeTo(null);
+            facturacion.setTitle("Facturación");
         }
     }
 
@@ -79,6 +90,8 @@ public class Controller implements ActionListener {
             }else{
                 irAlMenu();
             }
+        }else{
+            JOptionPane.showMessageDialog(null, "Los datos ingresados no son validos.", "Error", 2);
         }
     }
 
@@ -86,8 +99,9 @@ public class Controller implements ActionListener {
         this.loginVista.setVisible(false);
         JOptionPane.showMessageDialog(null, "Acceso correcto al sistema.");
         menu.lblBienvenido.setText("Bienvenido: "+this.usuario.getNombre());
+        menu.setLocationRelativeTo(null);
         menu.setVisible(true);
-        System.out.println("usuario = " + this.usuario.toString());
+       // System.out.println("usuario = " + this.usuario.toString());
     }
     
     private void cargarCombo(String formulario) throws SQLException {
