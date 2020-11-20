@@ -21,4 +21,12 @@ public class ClienteDao {
                 + "INNER JOIN tipos_documentos as t on c.idTipoDocumento=t.id";
         return sql;
     }
+
+    public static String cliente(String documento) {
+        String sql = " SELECT\n"
+                + "	*\n"
+                + "FROM\n"
+                + "	clientes where documento='"+documento+"'";
+        return sql;
+    }
 }

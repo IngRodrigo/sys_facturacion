@@ -4,6 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/rodrigo_dev/Documents/NetBeansProjects/sys_facturacion/src/controller/Controller.java</file>
+            <file>file:/C:/Users/rodrigo_dev/Documents/NetBeansProjects/sys_facturacion/src/utilidades/Globales.java</file>
+            <file>file:/C:/Users/rodrigo_dev/Documents/NetBeansProjects/sys_facturacion/src/view/MenuPrincipalView.java</file>
+            <file>file:/C:/Users/rodrigo_dev/Documents/NetBeansProjects/sys_facturacion/src/model/Cliente.java</file>
+            <file>file:/C:/Users/rodrigo_dev/Documents/NetBeansProjects/sys_facturacion/src/model/ProductoDao.java</file>
+            <file>file:/C:/Users/rodrigo_dev/Documents/NetBeansProjects/sys_facturacion/src/model/Producto.java</file>
+            <file>file:/C:/Users/rodrigo_dev/Documents/NetBeansProjects/sys_facturacion/src/view/ClientesOperaciones.java</file>
         </group>
     </open-files>
 </project-private>

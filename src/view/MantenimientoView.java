@@ -43,7 +43,7 @@ public class MantenimientoView extends javax.swing.JFrame {
         _productos_combo_proveedores = new javax.swing.JComboBox();
         _productos_btn_guardar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Productos"));
 

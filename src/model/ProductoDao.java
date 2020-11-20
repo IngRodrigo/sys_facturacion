@@ -1,12 +1,7 @@
 package model;
 
-import java.util.ArrayList;
 import utilidades.Globales;
 
-/**
- *
- * @author rodrigo_dev
- */
 public class ProductoDao {
 
     public static String insertarProducto(Producto producto, String usuario) {
