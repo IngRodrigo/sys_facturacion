@@ -5,16 +5,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import model.Cliente;
+import model.ClienteDao;
 import model.Conexion;
 import model.Producto;
 import model.ProductoDao;
+import utilidades.Globales;
 import view.MenuPrincipalView;
 import view.AccesoView;
+import view.ClientesOperaciones;
 import view.FacturacionView;
 import view.MantenimientoView;
 
@@ -33,6 +36,7 @@ public class Controller implements ActionListener, FocusListener {
     MenuPrincipalView menu= new MenuPrincipalView();
     FacturacionView facturacion= new FacturacionView();
     MantenimientoView mantenimiento= new MantenimientoView();
+    ClientesOperaciones clientesVista= new ClientesOperaciones();
     /**
      * **********************************
      * Modelos    
@@ -47,6 +51,7 @@ public class Controller implements ActionListener, FocusListener {
      */
     ResultSet resultSet;
     ArrayList<Usuario>listaUsuario;
+    ArrayList<Cliente>listaClientes;
 
     public Controller() {
         iniciarSistema();
@@ -69,9 +74,12 @@ public class Controller implements ActionListener, FocusListener {
         loginVista.btnAcceder.addActionListener(this);
         menu.btnMantenimiento.addActionListener(this);
         menu.btnFacturacion.addActionListener(this);
+        menu._menu_btn_clientes.addActionListener(this);
         facturacion.txt_codigo_cliente.addFocusListener(this);
         
         mantenimiento._productos_btn_guardar.addActionListener(this);
+        
+        clientesVista._clientes_btn_todos.addActionListener(this);
     }
 
     @Override
@@ -93,8 +101,21 @@ public class Controller implements ActionListener, FocusListener {
             facturacion.setTitle("Facturación");
         }
         
+        if(evento.getSource()==menu._menu_btn_clientes){
+            clientesVista.setVisible(true);
+            clientesVista.setTitle("Clientes");
+            clientesVista.setLocationRelativeTo(null);
+        }
+        
         if(evento.getSource()==mantenimiento._productos_btn_guardar){
-           validarProducto();
+           validarEInsertarProducto();
+        }
+        
+        /*************************************************
+        Eventos del formulario clientes operaciones
+        *************************************************/
+        if(evento.getSource()==clientesVista._clientes_btn_todos){
+           cargarTablaCliente();
         }
     }
 
@@ -203,7 +224,7 @@ public class Controller implements ActionListener, FocusListener {
         }
     }
 
-    private void validarProducto() {
+    private void validarEInsertarProducto() {
         double precioIpuesto=0;
         String codigo=mantenimiento._productos_txt_codigo.getText();
         String descripcion=mantenimiento._productos_txt_descripcion.getText();
@@ -233,6 +254,21 @@ public class Controller implements ActionListener, FocusListener {
             conexion.closeConexion();
         }
        
+    }
+
+    private void cargarTablaCliente() {
+        Globales go= new Globales();
+        String sql=ClienteDao.listarClientes();
+        
+        try {
+            resultSet=conexion.consultaSelect(sql);
+            go.cargarTabla(resultSet, clientesVista._clientes_tabla, "clientes");
+            conexion.closeConexion();
+        } catch (Exception e) {
+            System.out.println("e = " + e);
+        }
+        
+        
     }
 
     

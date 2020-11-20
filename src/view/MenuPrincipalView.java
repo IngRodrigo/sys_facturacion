@@ -31,7 +31,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         lblBienvenido = new javax.swing.JLabel();
         btnMantenimiento = new javax.swing.JButton();
         btnFacturacion = new javax.swing.JButton();
-        btnInventario = new javax.swing.JButton();
+        _menu_btn_clientes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,7 +61,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
 
         btnFacturacion.setText("FATURACION");
 
-        btnInventario.setText("jButton3");
+        _menu_btn_clientes.setText("Clientes");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,7 +70,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(_menu_btn_clientes, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnFacturacion, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMantenimiento)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -86,7 +86,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnFacturacion, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(_menu_btn_clientes, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(36, Short.MAX_VALUE))
         );
 
@@ -129,8 +129,8 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton _menu_btn_clientes;
     public javax.swing.JButton btnFacturacion;
-    private javax.swing.JButton btnInventario;
     public javax.swing.JButton btnMantenimiento;
     private javax.swing.JPanel jPanel1;
     public javax.swing.JLabel lblBienvenido;

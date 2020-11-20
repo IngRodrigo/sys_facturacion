@@ -13,10 +13,18 @@ public class Producto {
     
     private String id, descripcion, codigo, create_at, update_at;
     private int impuesto, cantidad, idProveedor, idUsuario;
-    private double precio, preciodescuento;
+    private double precio, preciodescuento, precioFinal;
     
 
     public Producto() {
+    }
+
+    public double getPrecioFinal() {
+        return precioFinal;
+    }
+
+    public void setPrecioFinal(double precioFinal) {
+        this.precioFinal = precioFinal;
     }
 
     public double getPreciodescuento() {
