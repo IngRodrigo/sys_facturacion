@@ -26,5 +26,11 @@ public class ProductoDao {
 
         return insert;
     }
-
+    
+    
+    public static String producto(String codigo){
+        String sql="SELECT * FROM sys_facturacion.productos where codigo='"+codigo+"'";
+        
+        return sql;
+    }
 }

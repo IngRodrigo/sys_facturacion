@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import model.Cliente;
 import model.ClienteDao;
@@ -79,13 +78,17 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
         menu.btnMantenimiento.addActionListener(this);
         menu.btnFacturacion.addActionListener(this);
         menu._menu_btn_clientes.addActionListener(this);
+
         facturacion.txt_codigo_cliente.addFocusListener(this);
+        facturacion._factura_codigo_producto.addFocusListener(this);
+        facturacion._factura_nueva.addActionListener(this);
 
         mantenimiento._productos_btn_guardar.addActionListener(this);
 
         clientesVista._clientes_btn_todos.addActionListener(this);
         clientesVista._clientes_btn_guardar.addActionListener(this);
         clientesVista._clientes_tabla.addMouseListener(this);
+
     }
 
     @Override
@@ -99,14 +102,10 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
          * ***********************************************
          */
         if (evento.getSource() == menu.btnMantenimiento) {
-            mantenimiento.setVisible(true);
-            mantenimiento.setTitle("Mantenimiento de datos");
-            mantenimiento.setLocationRelativeTo(null);
+            mostrarManteniiento();
         }
         if (evento.getSource() == menu.btnFacturacion) {
-            facturacion.setVisible(true);
-            facturacion.setLocationRelativeTo(null);
-            facturacion.setTitle("Facturación");
+            mostrarFacturacion();
         }
 
         if (evento.getSource() == menu._menu_btn_clientes) {
@@ -115,6 +114,15 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
 
         if (evento.getSource() == mantenimiento._productos_btn_guardar) {
             validarEInsertarProducto();
+        }
+
+        /**
+         * ***********************************************
+         * Eventos del formulario facturacion
+         * ***********************************************
+         */
+        if (evento.getSource() == facturacion._factura_nueva) {
+            generearCodigoFactura();
         }
 
         /**
@@ -170,6 +178,20 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
 
         if (formulario.equals("ciudad")) {
             String sql = "Select * from ciudades";
+            try {
+                this.resultSet = conexion.consultaSelect(sql);
+                combo.removeAllItems();
+                while (resultSet.next()) {
+                    combo.addItem(resultSet.getString("descripcion"));
+                }
+                conexion.closeConexion();
+            } catch (Exception e) {
+                System.out.println("e = " + e);
+            }
+        }
+
+        if (formulario.equals("pais")) {
+            String sql = "Select * from paises";
             try {
                 this.resultSet = conexion.consultaSelect(sql);
                 combo.removeAllItems();
@@ -237,6 +259,26 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
                 }
             } catch (Exception e) {
                 System.out.println("Exception al traer el cliente = " + e);
+            }
+        }
+
+        if (fe.getSource() == facturacion._factura_codigo_producto) {
+            String resultado = "";
+            try {
+                this.resultSet = conexion.consultaSelect(ProductoDao.producto(facturacion._factura_codigo_producto.getText()));
+                while (resultSet.next()) {
+                    resultado = resultSet.getString("descripcion");
+                }
+                if (resultado.length() > 0) {
+                    facturacion._factura_producto.setText(resultado);
+                    facturacion._factura_producto.setForeground(Color.BLACK);
+                } else {
+                    int respuestaUsuario = JOptionPane.showConfirmDialog(null, "¿Desea crearlo", "Producto no encontrado", 1);
+                    if (respuestaUsuario == 0) {
+                        mostrarManteniiento();
+                    }
+                }
+            } catch (Exception e) {
             }
         }
 
@@ -330,7 +372,7 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
 
         try {
             resultSet = conexion.consultaSelect(sql);
-            go.cargarTabla(resultSet, clientesVista._clientes_tabla, "cxlientes");
+            go.cargarTabla(resultSet, clientesVista._clientes_tabla, "clientes");
             conexion.closeConexion();
         } catch (Exception e) {
             System.out.println("e = " + e);
@@ -383,6 +425,39 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
         } catch (Exception e) {
             System.out.println("e = " + e);
         }
+        try {
+            cargarCombo("pais", clientesVista._clientes_combo_pais);
+        } catch (Exception e) {
+            System.out.println("e = " + e);
+        }
+    }
+
+    private void generearCodigoFactura() {
+        String sql = "SELECT count(*) as id FROM sys_facturacion.factura_cab;";
+        try {
+            int id = 0;
+            this.resultSet = conexion.consultaSelect(sql);
+            while (resultSet.next()) {
+                id = resultSet.getInt("id") + 1;
+            }
+            conexion.closeConexion();
+            facturacion._factura_numero.setText(String.valueOf(String.format("%08d", id)));
+        } catch (Exception e) {
+        }
+    }
+
+    private void mostrarFacturacion() {
+        facturacion.setVisible(true);
+        facturacion.setLocationRelativeTo(null);
+        facturacion.setTitle("Facturación");
+        facturacion._factura_numero.setEnabled(false);
+        facturacion._factura_producto.setEnabled(false);
+    }
+
+    private void mostrarManteniiento() {
+        mantenimiento.setVisible(true);
+        mantenimiento.setTitle("Mantenimiento de datos");
+        mantenimiento.setLocationRelativeTo(null);
     }
 
 }
