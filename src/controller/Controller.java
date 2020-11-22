@@ -14,11 +14,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import model.CiudadDao;
 import model.Cliente;
 import model.ClienteDao;
 import model.Conexion;
+import model.PaisDao;
 import model.Producto;
 import model.ProductoDao;
+import model.TipoDocumento;
+import model.TipoDocumentoDao;
 import utilidades.Globales;
 import view.MenuPrincipalView;
 import view.AccesoView;
@@ -134,7 +138,7 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
             cargarTablaCliente();
         }
         if (evento.getSource() == clientesVista._clientes_btn_guardar) {
-            validarEInsertarClientes();
+            validarClientes();
         }
     }
 
@@ -201,6 +205,17 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
                 conexion.closeConexion();
             } catch (Exception e) {
                 System.out.println("e = " + e);
+            }
+        }
+        
+        if(formulario.equals("tipo_documento")){
+            try {
+                this.resultSet=conexion.consultaSelect(TipoDocumentoDao.listaTipoDocumentos());
+                combo.removeAllItems();
+                while (resultSet.next()) {                    
+                    combo.addItem(resultSet.getString("descripcion"));
+                }
+            } catch (Exception e) {
             }
         }
     }
@@ -341,11 +356,77 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
 
     }
 
-    private void validarEInsertarClientes() {
+    private void validarClientes() {
         if (clientesVista._clientes_documento.getText().length() > 0) {
             if (clientesVista._clientes_razon.getText().length() > 0) {
                 if (clientesVista._clientes_nombre.getText().length() > 0) {
-
+                    if(clientesVista._clientes_apellidos_.getText().length()>0){
+                        if(clientesVista._clientes_telefono.getText().length()>0){
+                            Cliente cliente = new Cliente();
+                            cliente.setDocumento(clientesVista._clientes_documento.getText());
+                            cliente.setNombre(clientesVista._clientes_nombre.getText());
+                            cliente.setApellido(clientesVista._clientes_apellidos_.getText());
+                            cliente.setRazon_social(clientesVista._clientes_razon.getText());
+                            
+                            try {
+                                String idCiudad="";
+                                resultSet=conexion.consultaSelect(CiudadDao.idCiudad(clientesVista._clientes_combo_ciudad.getSelectedItem().toString()));
+                                while (resultSet.next()) {                                    
+                                    idCiudad=resultSet.getString("id");
+                                }
+                                if(idCiudad.length()>0){
+                                    cliente.setIdCiudad(Integer.parseInt(idCiudad));
+                                }else{
+                                    JOptionPane.showMessageDialog(null, "Error al intentar guardar la ciudad");
+                                }
+                            } catch (Exception e) {
+                                System.out.println("e = " + e);;
+                            }
+                            try {
+                                String idPais="";
+                                resultSet=conexion.consultaSelect(PaisDao.idPais(clientesVista._clientes_combo_pais.getSelectedItem().toString()));
+                                while (resultSet.next()) {                                    
+                                    idPais=resultSet.getString("id");
+                                }
+                                if(idPais.length()>0){
+                                    cliente.setIdPais(Integer.parseInt(idPais));
+                                }else{
+                                    JOptionPane.showMessageDialog(null, "Error al intentar guardar el pais");
+                                }
+                            } catch (Exception e) {
+                                System.out.println("e = " + e);;
+                            }
+                            try {
+                                String idTipoDocumento="";
+                                resultSet=conexion.consultaSelect(TipoDocumentoDao.idTipoDocumento(clientesVista._clientes_combo_tipo_documento.getSelectedItem().toString()));
+                                while (resultSet.next()) {                                    
+                                    idTipoDocumento=resultSet.getString("id");
+                                }
+                                if(idTipoDocumento.length()>0){
+                                    cliente.setIdTipoDocumento(Integer.parseInt(idTipoDocumento));
+                                }else{
+                                    JOptionPane.showMessageDialog(null, "Error al intentar guardar el tipo de documento");
+                                }
+                            } catch (Exception e) {
+                                System.out.println("e = " + e);;
+                            }
+                            
+                            cliente.setDireccion(clientesVista._clientes_direccion.getText());
+                            cliente.setTelefono(clientesVista._clientes_telefono.getText());
+                            cliente.setTelefono_movil(clientesVista._clientes_celular.getText());
+                            
+                            insertarCliente(cliente);
+                        }else{
+                            JOptionPane.showMessageDialog(null, "El campo nombre no puede estar vacio", "ERROR", 2);
+                            clientesVista._clientes_telefono.setBackground(Color.RED);
+                            clientesVista._clientes_telefono.setForeground(Color.WHITE);
+                        }
+                    }else{
+                            JOptionPane.showMessageDialog(null, "El campo nombre no puede estar vacio", "ERROR", 2);
+                            clientesVista._clientes_apellidos_.setBackground(Color.RED);
+                            clientesVista._clientes_apellidos_.setForeground(Color.WHITE);
+                    }
+                          
                 } else {
                     JOptionPane.showMessageDialog(null, "El campo nombre no puede estar vacio", "ERROR", 2);
                     clientesVista._clientes_nombre.setBackground(Color.RED);
@@ -362,7 +443,6 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
             clientesVista._clientes_documento.setBackground(Color.RED);
             clientesVista._clientes_documento.setForeground(Color.WHITE);
         }
-        Cliente cliente = new Cliente();
 
     }
 
@@ -430,6 +510,11 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
         } catch (Exception e) {
             System.out.println("e = " + e);
         }
+        try {
+            cargarCombo("tipo_documento", clientesVista._clientes_combo_tipo_documento);
+        } catch (Exception e) {
+            System.out.println("e = " + e);
+        }
     }
 
     private void generearCodigoFactura() {
@@ -443,6 +528,7 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
             conexion.closeConexion();
             facturacion._factura_numero.setText(String.valueOf(String.format("%08d", id)));
         } catch (Exception e) {
+            System.out.println("e = " + e);
         }
     }
 
@@ -460,4 +546,15 @@ public class Controller implements ActionListener, FocusListener, MouseListener 
         mantenimiento.setLocationRelativeTo(null);
     }
 
+    private void insertarCliente(Cliente cliente) {
+        System.out.println("cliente = " + ClienteDao.insertarCliente(cliente, this.usuario.getId()));
+        try {
+            if(conexion.insertarRegistro(ClienteDao.insertarCliente(cliente, this.usuario.getId()))){
+             JOptionPane.showMessageDialog(null, "Registro insertado correctamente");
+             conexion.closeConexion();
+            }
+        } catch (Exception e) {
+            System.out.println("e = " + e);
+        }
+    }
 }

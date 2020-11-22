@@ -1,5 +1,7 @@
 package model;
 
+import utilidades.Globales;
+
 public class ClienteDao {
 
     public static String listarClientes() {
@@ -27,6 +29,15 @@ public class ClienteDao {
                 + "	*\n"
                 + "FROM\n"
                 + "	clientes where documento='"+documento+"'";
+        return sql;
+    }
+    
+    public static String insertarCliente(Cliente cliente, String usuario){
+
+        String sql="insert into clientes (documento, razon_social, nombre, apellido, idCiudad, idPais, direccion, telefono, telefono_movil, idTipoDocumento, create_at, update_at, idUser, ipServidor)"
+                + " values ('"+cliente.getDocumento()+"', '"+cliente.getRazon_social()+"', '"+cliente.getNombre()+"', '"+cliente.getApellido()+"', '"+cliente.getIdCiudad()+"', "
+                + "'"+cliente.getIdPais()+"', '"+cliente.getDireccion()+"', '"+cliente.getTelefono()+"', '"+cliente.getTelefono_movil()+"', '"+cliente.getIdTipoDocumento()+"', '"+Globales.fechaActual()+"', '"+Globales.fechaActual()+"', "
+                + "'"+usuario+"', '"+Globales.capturarIP()+"')";
         return sql;
     }
 }
